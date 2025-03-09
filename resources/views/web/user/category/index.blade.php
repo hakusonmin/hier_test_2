@@ -22,6 +22,7 @@
       </a>
     @endforeach
   @endif
+  <button class="back-button" type="button" onClick="history.back();">戻る</button>
 </body>
 
 </html>

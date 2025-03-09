@@ -22,4 +22,5 @@
             </select>
         @endforeach
     </form>
+    <button class="back-button" type="button" onClick="history.back();">戻る</button>
 </div>

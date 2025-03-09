@@ -35,7 +35,7 @@ class CategorySeeder extends Seeder
             [
                 'id' => '4',
                 'parent_id' => 'null',
-                'name' => 'iPhone',
+                'name' => 'スマートフォン',
                 'level' => 1,
             ],
             [
@@ -55,6 +55,18 @@ class CategorySeeder extends Seeder
                 'parent_id' => '2',
                 'name' => '子供用デスク',
                 'level' => 3,
+            ],
+            [
+                'id' => '8',
+                'parent_id' => '4',
+                'name' => 'iPhone',
+                'level' => 2,
+            ],
+            [
+                'id' => '9',
+                'parent_id' => '4',
+                'name' => 'Android',
+                'level' => 2,
             ],
         ]);
     }
