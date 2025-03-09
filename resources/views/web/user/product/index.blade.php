@@ -7,7 +7,7 @@
         <p>在庫: {{ $selectedSku->stock }}</p>
         <p>製品コード: {{ $selectedSku->product_number }}</p>
     @else
-        <p>この組み合わせのSKUは存在しません</p>
+        <p>この組み合わせの商品は存在しません</p>
     @endif
 
     <form method="GET" action="{{ route('user.product.index', ['product' => $product->id]) }}">
