@@ -15,40 +15,50 @@ class ProductController extends Controller
      */
     public function index(Request $request, Product $product)
     {
+        // 商品情報を取得
+        $product = Product::with('skus')->findOrFail($product->id);
 
-        $product = Product::with('skus.options')->findOrFail($product->id);
+        // SKUごとのオプション（カラムごとのユニークな値を取得）
+        $skuOptions = $this->getSkuOptions($product);
 
-        // 'options.name'（例: "色", "サイズ"）をキーに、'sku_options.name'（例: "赤", "M"）を値として格納
+        // クエリパラメータから選択されたオプションを取得（デフォルト値は最初の値）
+        $selectedOptions = $this->getSelectedOptions($request, $skuOptions);
+
+        // 選択されたオプションに該当する SKU を取得
+        $selectedSku = $this->findMatchingSku($product, $selectedOptions);
+
+        return view('web.user.product.index', compact('product', 'skuOptions', 'selectedOptions', 'selectedSku'));
+    }
+
+    private function getSkuOptions($product)
+    {
         $skuOptions = [];
+
         foreach ($product->skus as $sku) {
-            foreach ($sku->options as $option) {
-                $skuOptions[$option->name][] = $option->pivot->name;
+            $styleOptions = json_decode($sku->style, true); // JSONを配列として取得
+            foreach ($styleOptions as $optionName => $optionValue) {
+                $skuOptions[$optionName][] = $optionValue;
             }
         }
         // 各オプションのユニークな値を取得（重複削除）
-        foreach ($skuOptions as &$values) {
-            $values = array_values(array_unique($values));
-        }
-        unset($values); // 参照渡しを解除
+        return array_map(fn($values) => array_values(array_unique($values)), $skuOptions);
+    }
 
-        // クエリパラメータから選択されたオプションを取得（デフォルト値：最初のオプション）
-        $selectedOptions = [];
-        foreach ($skuOptions as $key => $values) {
-            $selectedOptions[$key] = $request->query($key, isset($values[0]) ? $values[0] : '');
-        }
-        // 選択されたオプションに該当するSKUを取得
-        $selectedSku = Sku::where('product_id', $product->id);
+    private function getSelectedOptions(Request $request, array $skuOptions)
+    {
+        return collect($skuOptions)->mapWithKeys(fn($values, $key) => [
+            $key => $request->query($key, $values[0] ?? null)
+        ])->toArray();
+    }
+
+    private function findMatchingSku($product, array $selectedOptions)
+    {
+        $query = Sku::where('product_id', $product->id);
 
         foreach ($selectedOptions as $key => $value) {
-            $selectedSku->whereHas('options', function ($query) use ($key, $value) {
-                $query->where('options.name', $key)
-                    ->where('sku_options.name', $value);
-            });
+            $query->whereJsonContains('style->' . $key, $value);
         }
-
-        $selectedSku = $selectedSku->first();
-
-        return view('web.user.product.index', compact('product', 'skuOptions', 'selectedOptions', 'selectedSku'));
+        return $query->first();
     }
 
     /**

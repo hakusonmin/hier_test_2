@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('product_number', 50)->unique();
             $table->decimal('price', 10, 2);
             $table->integer('stock')->default(0);
+            $table->json('style')->nullable();
             $table->text('description')->nullable();
             $table->foreignId('product_id')
                 ->constrained()

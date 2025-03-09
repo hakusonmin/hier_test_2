@@ -19,6 +19,11 @@ class SkuSeeder extends Seeder
                 'product_number' => '100000',
                 'price' => 100,
                 'stock' => 20,
+                'style' => json_encode([
+                    'color' => 'ブラック',
+                    'size' => 'L',
+                    'Hole' => '有り',
+                ]),
                 'description' => 'あいうえお',
                 'product_id' => 1,
             ],
@@ -27,13 +32,24 @@ class SkuSeeder extends Seeder
                 'product_number' => '100001',
                 'price' => 100,
                 'stock' => 20,
+                'style' => json_encode([
+                    'color' => 'ホワイト',
+                    'size' => 'M',
+                    'Hole' => '有り',
+                ]),
                 'description' => 'かきくけこ',
                 'product_id' => 1,
-            ],            [
+            ],
+            [
                 'id' => '3',
                 'product_number' => '100002',
                 'price' => 100,
                 'stock' => 20,
+                'style' => json_encode([
+                    'color' => 'ブラウン',
+                    'size' => 'S',
+                    'Hole' => '有り',
+                ]),
                 'description' => 'さしすせそ',
                 'product_id' => 1,
             ],
