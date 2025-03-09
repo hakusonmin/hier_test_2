@@ -15,7 +15,6 @@ class SkuSeeder extends Seeder
     {
         DB::table('skus')->insert([
             [
-                'id' => '1',
                 'product_number' => '100000',
                 'price' => 100,
                 'stock' => 20,
@@ -28,7 +27,18 @@ class SkuSeeder extends Seeder
                 'product_id' => 1,
             ],
             [
-                'id' => '2',
+                'product_number' => '100004',
+                'price' => 100,
+                'stock' => 20,
+                'style' => json_encode([
+                    'color' => 'ブラック',
+                    'size' => 'L',
+                    'Hole' => '無し',
+                ]),
+                'description' => 'あいうえお',
+                'product_id' => 1,
+            ],
+            [
                 'product_number' => '100001',
                 'price' => 100,
                 'stock' => 20,
@@ -41,7 +51,6 @@ class SkuSeeder extends Seeder
                 'product_id' => 1,
             ],
             [
-                'id' => '3',
                 'product_number' => '100002',
                 'price' => 100,
                 'stock' => 20,
