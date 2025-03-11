@@ -49,7 +49,6 @@ class ProductController extends Controller
         return collect($skuOptions)->mapWithKeys(fn($values, $key) => [
             $key => $request->query($key, $values[0] ?? null)
         ])->toArray();
-        
     }
 
     private function findMatchingSku($product, array $selectedOptions)
